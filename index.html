@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Depósito Materias Primas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="https://kims.com.ar/wp-content/uploads/2018/05/logo-kimsclaim_web-1.png" type="image/x-icon">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: row;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .sidebar {
+      width: 220px;
+      background-color: rgba(242,242,242,1);
+      color: rgb(0, 0, 0);
+      padding: 20px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+    }
+
+    .sidebar button {
+      background: none;
+      border: none;
+      color: rgb(0, 0, 0);
+      padding: 12px 20px;
+      text-align: left;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: background 0.3s;
+    }
+
+    .sidebar button:hover,
+    .sidebar button.active {
+      background-color: #cacaca;
+    }
+
+    .logo {
+        display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  flex-wrap: wrap;
+    }
+
+    .logo .imglogo {
+      width: 153px;
+      height: 100px;
+    }
+
+    .sidebar img,
+    .sidebar svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .main {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .iframe-container {
+      flex-grow: 1;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .header {
+      padding: 15px;
+      background: rgba(242,242,242,1);
+      border-bottom: 1px solid #ccc;
+      font-weight: bold;
+      font-size: 18px;
+    }
+    
+    .relojkims {
+      padding: 15px 20px;
+      font-size: 16px;
+      color: rgb(0, 0, 0);
+      border-top: 1px solid #ccc;
+    }
+
+    footer {
+      background-color: rgba(242,242,242,1);
+    }
+
+    @media screen and (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+        .logo {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+      .logo .imglogo {
+      width: 76px;
+      height: 50px;
+    }
+      .sidebar {
+        flex-direction: row;
+        width: 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        padding: 10px;
+      }
+
+      .sidebar .relojkims {
+        display: none;
+      }
+
+      .sidebar button {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        font-size: 12px;
+        min-width: 80px;
+      }
+
+      .header {
+        font-size: 16px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="logo">
+        <img src="https://kims.com.ar/wp-content/uploads/2018/05/logo-kimsclaim_web-1.png" class="imglogo" alt="Logo">
+    </div>
+        <div id="clock" class="relojkims">
+    🕒 --
+    </div>
+    <button onclick="openExternalApp('https://mail.google.com')">
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" ry="2"/><polyline points="3 7 12 13 21 7"/></svg>
+      Correo
+    </button>
+    <button onclick="openExternalApp('https://keep.google.com')">
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 3h16v18H4z"/><path d="M8 7h8"/><path d="M8 11h8"/><path d="M8 15h4"/></svg>
+      Notas
+    </button>
+    
+    <button onclick="loadIframeApp('Calendario', 'https://www.google.com/calendar/embed?color=%23c2c2c2&amp;embed_style=WyJhdDplbWI6c3QiLCIjZTBlMGUwIiwiI2VkZWRlZCIsIiM0MTg0ZjMiLCJyb2JvdG8iLCIjNjM2MzYzIiw1MDAsIiNmZmYiXQo&amp;eopt=0&amp;mode=month&amp;showCalendars=1&amp;showPrint=0&amp;showTz=0&amp;src=85fbbe7ff3002b13b5424e471ec3859623e711d093422ebce673a33db258f0af@group.calendar.google.com')" class="active">
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Calendario
+    </button>
+
+    <button onclick="loadIframeApp('Historial', 'https://docs.google.com/spreadsheets/d/1kodNSgaOc8N3wwRmwadAKRel5aPBrcNxezwQjeYXsoM/htmlembed?authuser=0')">
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Historial
+    </button>
+    <button onclick="loadIframeApp('Gestión de otros Insumos Auxiliares y directos Uruguay', 'https://form.jotform.com/jsform/252105730969662')" >
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 7l9 4 9-4"/><path d="M3 17l9 4 9-4"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></svg>
+      Gestión de Insumos Uruguay
+    </button>    
+    
+    <button onclick="loadIframeApp('Gestión de Papel Uruguay', 'https://docs.google.com/forms/d/e/1FAIpQLScZvJwoZD5JQf8Ue4nV5OCMoenqJcbKbypNEHaIZsF-xs40xg/viewform?embedded=true')">
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5"/><path d="M3 12c0 1.7 4 3 9 3s9-1.3 9-3"/></svg>
+      Gestión de Papel Uruguay
+    </button>
+    <button onclick="loadIframeApp('Gestión de Insumos Mitre', 'https://docs.google.com/forms/d/e/1FAIpQLSet4bJe4s0HeHfKW_9g0n4JI0wj2P9tK9kYhUKCxmQ-vSf4kg/viewform?usp=dialog')">
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Gestión de Insumos Mitre
+    </button>
+       </div>
+  </div>
+
+  <div class="main">
+    <div class="header" id="appTitle">Depósito Materias Primas Calendario
+    </div>
+    <div class="iframe-container">
+      <iframe id="mainIframe" src="https://www.google.com/calendar/embed?color=%23c2c2c2&amp;embed_style=WyJhdDplbWI6c3QiLCIjZTBlMGUwIiwiI2VkZWRlZCIsIiM0MTg0ZjMiLCJyb2JvdG8iLCIjNjM2MzYzIiw1MDAsIiNmZmYiXQo&amp;eopt=0&amp;mode=month&amp;showCalendars=1&amp;showPrint=0&amp;showTz=0&amp;src=85fbbe7ff3002b13b5424e471ec3859623e711d093422ebce673a33db258f0af@group.calendar.google.com"></iframe>
+    </div>
+  </div>
+
+  <script>
+  function loadIframeApp(title, url) {
+    const iframeContainer = document.querySelector('.iframe-container');
+    const appTitle = document.getElementById('appTitle');
+    const buttons = document.querySelectorAll('.sidebar button');
+
+    // Limpiar iframe previo
+    iframeContainer.innerHTML = '';
+
+    // Título
+    appTitle.innerText = title;
+
+    // Quitar estado activo
+    buttons.forEach(btn => btn.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+
+    // Si es un formulario JotForm
+    if (url.includes('jotform.com')) {
+      const iframe = document.createElement('iframe');
+      iframe.id = 'JotFormIFrame';
+      iframe.title = title;
+      iframe.src = url.replace('/jsform/', '/');
+      iframe.style = 'min-width:100%;max-width:100%;height:690px;border:none;';
+      iframe.allow = 'geolocation; microphone; camera; fullscreen; payment';
+      iframe.allowTransparency = true;
+      iframe.scrolling = 'no';
+      iframe.onload = () => window.scrollTo(0, 0);
+      iframeContainer.appendChild(iframe);
+
+      if (!document.getElementById('jotform-script')) {
+        const script = document.createElement('script');
+        script.id = 'jotform-script';
+        script.src = 'https://cdn.jotfor.ms/s/umd/latest/for-form-embed-handler.js';
+        script.onload = () => {
+          window.jotformEmbedHandler(
+            "iframe[id='JotFormIFrame']",
+            "https://form.jotform.com/"
+          );
+        };
+        document.body.appendChild(script);
+      } else {
+        window.jotformEmbedHandler(
+          "iframe[id='JotFormIFrame']",
+          "https://form.jotform.com/"
+        );
+      }
+
+    } else {
+      const iframe = document.createElement('iframe');
+      iframe.id = 'mainIframe';
+      iframe.src = url;
+      iframe.style = 'width:100%;height:100%;border:none;';
+      iframeContainer.appendChild(iframe);
+    }
+  }
+
+  function openExternalApp(url) {
+    window.open(url, '_blank', 'noopener,noreferrer,width=1280,height=720');
+    const buttons = document.querySelectorAll('.sidebar button');
+    buttons.forEach(btn => btn.classList.remove('active'));
+    document.getElementById('appTitle').innerText = 'Aplicación Externa';
+  }
+
+  // Reloj 24hs con fecha
+  function updateClock() {
+    const now = new Date();
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const year = now.getFullYear();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    const timeString = `🕒 ${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+    document.getElementById('clock').innerText = timeString;
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
+
+  // 🔒 Bloquear clic derecho
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+  });
+</script>
+
+
+</body>
+</html>
